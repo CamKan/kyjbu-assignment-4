@@ -21,7 +21,7 @@ jobs:
 
     - name: Download NLTK data
       run: |
-        python -m nltk.downloader stopwords
+        venv/bin/python -m nltk.downloader stopwords
 
     - name: Run the application
       run: |
