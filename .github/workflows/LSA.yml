@@ -1,23 +1,27 @@
 name: CI
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v2
 
     - name: Set up Python 3.9
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v2
       with:
         python-version: '3.9'
-
 
     - name: Install dependencies
       run: |
         make install
+
+    - name: Download NLTK data
+      run: |
+        python -m nltk.downloader stopwords
 
     - name: Run the application
       run: |
