@@ -1,0 +1,32 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        make install
+
+    - name: Run the application
+      run: |
+        nohup make run &
+        sleep 10
+
+    - name: Test the server
+      run: |
+        curl --fail http://localhost:3000 || (echo "Server not running" && exit 1)
+
+    - name: Stop the application
+      run: |
+        pkill -f 'python app.py' || true
